@@ -5,7 +5,9 @@ var dropDownList = {
     '1':"Network",
     '2':"Connection Type",
     '3':"Video Quality",
-    '4':"Device Type"
+    '4':"Device Type",
+    '5': "Multi CDN",
+    '6': "Encoder"
 }
 
 var dropdownContnetData = {
@@ -29,7 +31,14 @@ var dropdownContnetData = {
     '4': [{'name':'65" TV', 'value': 24}, 
           {'name':'55" TV', 'value': 20},
           {'name':'Web Browser', 'value': 14}, 
-          {'name':'Mobile', 'value': 6}]
+          {'name':'Mobile', 'value': 6}],
+    
+    '5': [{'name':'Akamai', 'value': 700},
+          {'name':'Azure', 'value': 200},
+          {'name':'On Prem Private CDN', 'value': 100}],
+
+    '6': [{'name':'Elemental', 'value': 30},
+          {'name':'Harmonic', 'value': 27}]
 }
 
 var dropdownContnetActiveList = {
@@ -132,7 +141,7 @@ var calculateCurrentAssetEmission = function() {
             co2 += dropdownContnetData[i][dropdownContnetActiveList[i]]['value'];
         }
     }
-    document.getElementById('current-session-co2-emission').textContent = "CO2 emission playback = " + co2 + " kg";    
+    document.getElementById('current-session-co2-emission').textContent = "CO2 emission current playback = " + co2 + " kg";    
     emissionValuesArray.push(co2);
 
     let totalCo2 = emissionValuesArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
