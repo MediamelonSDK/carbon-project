@@ -48,43 +48,52 @@
         </div>
       </div>              
       <div class="dropdown-box box">
+        <h5 style="width: 100%; margin-bottom: 10px; margin-top: 5px;">Input Configuration</h5>
         <div id="dropdown-container"></div>
       </div>
     </div>   
     
+    <div>
+      <h5 style="margin-left: 2.7rem; margin-bottom: -10px; margin-top: 15px;">Output Metrics</h5>
+    </div>   
+
     <div class="emission-container">
+      
       <div class="emission-info">
         <div class="emission-card">
-          <h4 style="font-weight: bold; text-align: center">Player</h4>
+          <h4 style="font-weight: bold; text-align: center">Player Metrics</h4>
           <div class="emission-card">
             <p id="current-session-co2-emission">CO2 emission playback =</p>
-          </div>
-          <div class="emission-card">
-            <p id="total-co2-emission">Total CO2 emission of asset =</p>
-          </div>
+          </div>          
           <div class="emission-card">
             <p id="average-co2-emission">
               Average CO2 emission of the assets =
             </p>
           </div>
-        </div>
-        <div class="emission-card">
-          <p id="overall-co2-emission">Total CO2 Emission =</p>
-        </div>
+          <div class="emission-card">
+            <p id="total-co2-emission">Total CO2 emission of asset =</p>
+          </div>
+        </div>        
       </div>
 
       <div class="emission-info">
         <div class="emission-card">
-          <h4 style="font-weight: bold; text-align: center">CDN</h4>
+          <h4 style="font-weight: bold; text-align: center">CDN Metrics</h4>
           <div class="emission-card">
             <p id="avgerage-co2-cdn">Average CO2 emission per asset at CDN =</p>
           </div>
           <div class="emission-card">
             <p id="total-co2-cdn">Total CO2 emission of asset at CDN =</p>
           </div>
-        </div>
+        </div>        
+      </div>
+
+      <div class="emission-info">        
         <div class="emission-card">
-          <h4 style="font-weight: bold; text-align: center">Encoder</h4>
+          <h4 style="font-weight: bold; text-align: center">Data Center Metrics</h4>
+          <div class="emission-card">
+            <p id="encode-avg-co2">Average CO2 emission per asset at CDN =</p>
+          </div>
           <div class="emission-card">
             <p id="encode-co2-emission">
               CO2 emission to encode & package asset =
@@ -94,32 +103,8 @@
       </div>
     </div>
 
-    <!-- <div class="emission-container">
-      <div class="emission-info">
-        <div class="emission-card">
-          <p style="font-weight: bold; text-align: center;">Player</p>
-          <p id="current-session-co2-emission">CO2 emission playback = </p>                
-          <p id="total-co2-emission">Total CO2 emission of asset  = </p>
-          <p id="average-co2-emission">Average CO2 emission of the assets  = </p>
-        </div>
-      </div>
-
-      <div class="emission-info">
-        <div class="emission-card">
-          <p style="font-weight: bold; text-align: center;">CDN</p>
-          <p id="avgerage-co2-cdn">Average CO2 emission per asset at CDN =  </p>                
-          <p id="total-co2-cdn">Total CO2 emission of asset at CDN = </p>
-        </div>
-      </div>
-
-      <div class="emission-info">
-        <div class="emission-card">
-          <p style="font-weight: bold; text-align: center;">Encoder</p>
-          <p id="encode-co2-emission">CO2 emission to encode & package asset = </p>
-        </div>
-      </div>
+    <div style="margin-left: 2.7rem; margin-right: 2rem; text-align: center;" class="emission-card">
+      <p id="overall-co2-emission">Total CO2 Emission =</p>
     </div>
-
-    <p id="overall-co2-emission"> Total CO2 Emission = </p> -->
   </body>
 </html>

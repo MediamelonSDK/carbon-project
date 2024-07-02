@@ -7,7 +7,7 @@ var dropDownList = {
     '3':"Video Quality",
     '4':"Device Type",
     '5': "Multi CDN",
-    '6': "Encoder"
+    '6': "Data Center"
 }
 
 var dropdownContnetData = {
@@ -37,8 +37,8 @@ var dropdownContnetData = {
           {'name':'Azure', 'value': 22.1},
           {'name':'On Prem Private CDN', 'value': 25}],
 
-    '6': [{'name':'Elemental', 'value': 205},
-          {'name':'Harmonic', 'value': 230}]
+    '6': [{'name':'Elemental', 'value': 22.5},
+          {'name':'Harmonic', 'value': 23.0}]
 }
 
 var dropdownContnetActiveList = {
@@ -178,7 +178,7 @@ var calculateCurrentAssetEmission = function(updateArray) {
             co2 += dropdownContnetData[i][dropdownContnetActiveList[i]]['value'];
         }
     }
-    document.getElementById('current-session-co2-emission').textContent = "CO2 emission of current playback = " + co2 + " kg"; 
+    document.getElementById('current-session-co2-emission').textContent = "CO2e for current playback session = " + co2 + " kg"; 
     
     if(!updateArray){
         emissionValuesArray.pop();
@@ -186,16 +186,16 @@ var calculateCurrentAssetEmission = function(updateArray) {
     emissionValuesArray.push(co2);
 
     let totalCo2 = emissionValuesArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    document.getElementById('total-co2-emission').textContent = "Total CO2 emission of asset = " + totalCo2.toFixed(2) + " kg";
+    document.getElementById('total-co2-emission').textContent = "Total CO2e of all the playback sessions = " + totalCo2.toFixed(2) + " kg";
 
     let avgCo2 = totalCo2/(emissionValuesArray.length);
-    document.getElementById('average-co2-emission').textContent = "Average CO2 emission per asset = " + avgCo2.toFixed(2) + " kg";
+    document.getElementById('average-co2-emission').textContent = "Avg. CO2e per playback session = " + avgCo2.toFixed(2) + " kg";
     updateEmissionValuesArray(false);
 
 
-    document.getElementById('overlay-co2-emission').textContent = "CO2 Emission Playback = " + co2 + " kg";
-    document.getElementById('overlay-avg-co2-emission').textContent = "Avg. CO2 Em. of the Assets = " + avgCo2.toFixed(2) + " kg";
-    document.getElementById('overlay-total-co2-emission').textContent = "Total CO2 of Asset = " + totalCo2.toFixed(2) + " kg";
+    document.getElementById('overlay-co2-emission').textContent = "CO2e for current session = " + co2 + " kg";
+    document.getElementById('overlay-avg-co2-emission').textContent = "Avg. CO2e per session = " + avgCo2.toFixed(2) + " kg";
+    document.getElementById('overlay-total-co2-emission').textContent = "Total CO2e of all sessions = " + totalCo2.toFixed(2) + " kg";
     
     let indicator = document.getElementById('emission-indicator'); 
     let innerIndicator = document.getElementById('overlay-inner-indicator');    
@@ -226,28 +226,32 @@ var calculateCDNEmission = function() {
     let len = emissionValuesArray.length;
     let totalCo2 = len*avgCo2;
 
-    document.getElementById('avgerage-co2-cdn').textContent = "Average CO2 emission per asset at CDN = " + avgCo2.toFixed(2) + " kg";    
+    document.getElementById('avgerage-co2-cdn').textContent = "Avg. CO2e per CDN session = " + avgCo2.toFixed(2) + " kg";    
 
-    document.getElementById('total-co2-cdn').textContent = "Total CO2 emission of asset at CDN = " + totalCo2.toFixed(2) + " kg";
+    document.getElementById('total-co2-cdn').textContent = "Total CO2e of all the CDN sessions = " + totalCo2.toFixed(2) + " kg";
 
     cdnEmission = avgCo2;
 }
 
 var calculateEncoderEmission = function() {
-    let encodeCO2 = 0;
+    let avgEncodeCO2 = 0;
     if(dropdownContnetActiveList[6] >= 0){
-        encodeCO2 = dropdownContnetData[6][dropdownContnetActiveList[6]]['value'];
+        avgEncodeCO2 = dropdownContnetData[6][dropdownContnetActiveList[6]]['value'];
     }
 
-    document.getElementById('encode-co2-emission').textContent = "CO2 emission to encode & package asset = " + encodeCO2 + " kg";    
+    document.getElementById('encode-avg-co2').textContent = "Avg. CO2e per session to encode & package = " + avgEncodeCO2 + " kg";    
 
-    encoderEmission = encodeCO2;
+    let len = emissionValuesArray.length;
+    let totalCo2 = len*avgEncodeCO2;
+    document.getElementById('encode-co2-emission').textContent = "Total CO2e to encode & package = " + totalCo2 + " kg";    
+
+    encoderEmission = avgEncodeCO2;
 }
 
 var updateTotalCO2Emission = function() {
 
     let totalCO2Emission = playerEmission + cdnEmission + encoderEmission;
-    document.getElementById('overall-co2-emission').textContent = "Total CO2 Emission = " + totalCO2Emission + " kg";    
+    document.getElementById('overall-co2-emission').textContent = "Cummulative CO2e for current session = " + totalCO2Emission + " kg";    
 }
 
 var collapse = function(container) {
