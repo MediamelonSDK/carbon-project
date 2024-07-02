@@ -33,12 +33,12 @@ var dropdownContnetData = {
           {'name':'Web Browser', 'value': 14}, 
           {'name':'Mobile', 'value': 6}],
     
-    '5': [{'name':'Akamai', 'value': 700},
-          {'name':'Azure', 'value': 200},
-          {'name':'On Prem Private CDN', 'value': 100}],
+    '5': [{'name':'Akamai', 'value': 20.5},
+          {'name':'Azure', 'value': 22.1},
+          {'name':'On Prem Private CDN', 'value': 25}],
 
-    '6': [{'name':'Elemental', 'value': 30},
-          {'name':'Harmonic', 'value': 27}]
+    '6': [{'name':'Elemental', 'value': 205},
+          {'name':'Harmonic', 'value': 230}]
 }
 
 var dropdownContnetActiveList = {
@@ -46,12 +46,16 @@ var dropdownContnetActiveList = {
     '1': 0,
     '2': 1,
     '3': 1,
-    '4': 3
+    '4': 3,
+    '5': 0,
+    '6': 0
 }
 
 let radioElementsTrack = new Array(Object.keys(dropDownList).length);
 
 var emissionValuesArray = [84, 78, 43, 67, 75, 51, 58, 49, 41, 104, 69, 90, 47, 93, 42, 101, 103, 77, 105, 72, 41, 72, 100, 78, 86, 91, 91, 91, 76, 99, 72, 55, 57, 78, 43, 103, 42, 96, 91, 82, 68, 86, 82, 92, 92, 99, 69, 84, 75, 81, 96, 74, 65, 95, 94, 41, 106, 68, 62, 91, 63, 71, 99, 74, 94, 95, 81, 88, 99, 68, 83, 69, 66, 94, 101, 48, 62, 78, 50, 87, 73, 67, 73, 106, 86, 42, 68, 65, 97, 88, 53, 43, 86, 61, 94, 76, 73, 46, 81, 93];
+
+var playerEmission = 0, cdnEmission = 0, encoderEmission = 0;
 
 var updateEmissionValuesArray = function(fetch){
     if(fetch){
@@ -105,7 +109,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     dropdownContnetActiveList[i] = -1;
                 }
-                calculateCurrentAssetEmission();
+
+                if(i < 5){
+                    calculateCurrentAssetEmission();
+                    calculateCDNEmission();                    
+                }
+                else if(i == 5){
+                    calculateCDNEmission();
+                } else if(i > 5){
+                    calculateEncoderEmission();
+                }
+
+                updateTotalCO2Emission();
+                
             })
 
             label.appendChild(radio);
@@ -131,24 +147,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     calculateCurrentAssetEmission();
+    calculateCDNEmission();
+    calculateEncoderEmission();
+    updateTotalCO2Emission();
 });
 
 var calculateCurrentAssetEmission = function() {
-    let len = Object.keys(dropdownContnetActiveList).length;
+    let len = 5; //Object.keys(dropdownContnetActiveList).length;
     let co2 = 0;
     for(let i = 0;i<len;i++){        
         if(dropdownContnetActiveList[i] >= 0){
             co2 += dropdownContnetData[i][dropdownContnetActiveList[i]]['value'];
         }
     }
-    document.getElementById('current-session-co2-emission').textContent = "CO2 emission current playback = " + co2 + " kg";    
+    document.getElementById('current-session-co2-emission').textContent = "CO2 emission of current playback = " + co2 + " kg";    
     emissionValuesArray.push(co2);
 
     let totalCo2 = emissionValuesArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    document.getElementById('total-co2-emission').textContent = "Total CO2 emission of asset  = " + totalCo2 + " kg";
+    document.getElementById('total-co2-emission').textContent = "Total CO2 emission of asset = " + totalCo2.toFixed(2) + " kg";
 
     let avgCo2 = totalCo2/(emissionValuesArray.length);
-    document.getElementById('average-co2-emission').textContent = "Average CO2 emission of the assets  = " + avgCo2.toFixed(2) + " kg";
+    document.getElementById('average-co2-emission').textContent = "Average CO2 emission per asset = " + avgCo2.toFixed(2) + " kg";
     updateEmissionValuesArray(false);
     
     let indicator = document.getElementById('carbon-indicator');    
@@ -159,6 +178,41 @@ var calculateCurrentAssetEmission = function() {
     } else {
         indicator.style.backgroundColor = 'green';
     }
+
+    playerEmission = co2;
+}
+
+var calculateCDNEmission = function() {
+    let avgCo2 = 0;
+    if(dropdownContnetActiveList[5] >= 0){
+        avgCo2 = dropdownContnetData[5][dropdownContnetActiveList[5]]['value'];
+    }
+
+    let len = emissionValuesArray.length;
+    let totalCo2 = len*avgCo2;
+
+    document.getElementById('avgerage-co2-cdn').textContent = "Average CO2 emission per asset at CDN = " + avgCo2.toFixed(2) + " kg";    
+
+    document.getElementById('total-co2-cdn').textContent = "Total CO2 emission of asset at CDN = " + totalCo2.toFixed(2) + " kg";
+
+    cdnEmission = avgCo2;
+}
+
+var calculateEncoderEmission = function() {
+    let encodeCO2 = 0;
+    if(dropdownContnetActiveList[6] >= 0){
+        encodeCO2 = dropdownContnetData[6][dropdownContnetActiveList[6]]['value'];
+    }
+
+    document.getElementById('encode-co2-emission').textContent = "CO2 emission to encode & package asset = " + encodeCO2 + " kg";    
+
+    encoderEmission = encodeCO2;
+}
+
+var updateTotalCO2Emission = function() {
+
+    let totalCO2Emission = playerEmission + cdnEmission + encoderEmission;
+    document.getElementById('overall-co2-emission').textContent = "Total CO2 Emission = " + totalCO2Emission + " kg";    
 }
 
 var collapse = function(container) {
