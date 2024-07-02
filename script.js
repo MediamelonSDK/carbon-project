@@ -18,7 +18,7 @@ var dropdownContnetData = {
 
     '1': [{'name':'AT&T', 'value': 14},
           {'name':'Telus', 'value': 19},
-          {'name':'Jio', 'value': 24},
+          {'name':'Jio', 'value': 21},
           {'name':'Vodafone', 'value': 11}],
 
     '2': [{'name':'WiFi', 'value': 7}, 
@@ -66,7 +66,7 @@ var updateEmissionValuesArray = function(fetch){
     localStorage.setItem('emissionValuesArray', JSON.stringify(emissionValuesArray));
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('shaka-ui-loaded', function () {
     updateEmissionValuesArray(true); //fetch the stored emissionValuesArray from the local storage    
 
     const container = document.getElementById('dropdown-container');
@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const dropdownContent = document.createElement('div');
         dropdownContent.classList.add('dropdown-content');
+        dropdownContent.id = `dropdown-content${i}`;
 
         const radioLength = dropdownContnetData[i].length;
         for(let j=0;j<radioLength;j++){
@@ -93,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             if(j == dropdownContnetActiveList[i]){
                 radio.checked = true;
-                radioElementsTrack[i] = radio;                
+                radioElementsTrack[i] = radio;
             }
 
             radio.addEventListener('click', function(){
@@ -111,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if(i < 5){
-                    calculateCurrentAssetEmission();
+                    calculateCurrentAssetEmission(true);
                     calculateCDNEmission();                    
                 }
                 else if(i == 5){
@@ -146,13 +147,30 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    calculateCurrentAssetEmission();
+    calculateCurrentAssetEmission(true);
     calculateCDNEmission();
     calculateEncoderEmission();
     updateTotalCO2Emission();
+
+    //NEW
+    const overlayContainer = document.getElementById('overlay-content');    
+    overlayContainer.style.display = 'none';  
+    setTimeout(function(){
+        let indicator = document.getElementById('emission-indicator');
+        let overlayShowing = false;
+
+        // Open the overlay when the carbon indicator is clicked
+        indicator.addEventListener('click', (e) => {
+            overlayShowing = ! overlayShowing;
+            overlayContainer.style.display = overlayShowing ? 'flex' : 'none';
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    },1000);
+    //NEW
 });
 
-var calculateCurrentAssetEmission = function() {
+var calculateCurrentAssetEmission = function(updateArray) {
     let len = 5; //Object.keys(dropdownContnetActiveList).length;
     let co2 = 0;
     for(let i = 0;i<len;i++){        
@@ -160,7 +178,11 @@ var calculateCurrentAssetEmission = function() {
             co2 += dropdownContnetData[i][dropdownContnetActiveList[i]]['value'];
         }
     }
-    document.getElementById('current-session-co2-emission').textContent = "CO2 emission of current playback = " + co2 + " kg";    
+    document.getElementById('current-session-co2-emission').textContent = "CO2 emission of current playback = " + co2 + " kg"; 
+    
+    if(!updateArray){
+        emissionValuesArray.pop();
+    }
     emissionValuesArray.push(co2);
 
     let totalCo2 = emissionValuesArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -169,14 +191,27 @@ var calculateCurrentAssetEmission = function() {
     let avgCo2 = totalCo2/(emissionValuesArray.length);
     document.getElementById('average-co2-emission').textContent = "Average CO2 emission per asset = " + avgCo2.toFixed(2) + " kg";
     updateEmissionValuesArray(false);
+
+
+    document.getElementById('overlay-co2-emission').textContent = "CO2 Emission Playback = " + co2 + " kg";
+    document.getElementById('overlay-avg-co2-emission').textContent = "Avg. CO2 Em. of the Assets = " + avgCo2.toFixed(2) + " kg";
+    document.getElementById('overlay-total-co2-emission').textContent = "Total CO2 of Asset = " + totalCo2.toFixed(2) + " kg";
     
-    let indicator = document.getElementById('carbon-indicator');    
+    let indicator = document.getElementById('emission-indicator'); 
+    let innerIndicator = document.getElementById('overlay-inner-indicator');    
+    let switchElement = document.getElementById('switch');
     if (co2 > avgCo2) {
-        indicator.style.backgroundColor = 'red';
+        indicator.src = 'Carbon-Icon-R.svg';
+        innerIndicator.src = 'leaf-R.svg';
+        switchElement.checked = false;
     } else if (co2 == avgCo2) {
-        indicator.style.backgroundColor = 'orange';
+        indicator.src = 'Carbon-Icon_O.svg';
+        innerIndicator.src = 'leaf-O.svg';
+        switchElement.checked = false;
     } else {
-        indicator.style.backgroundColor = 'green';
+        indicator.src = 'Carbon-Icon.svg';
+        innerIndicator.src = 'leaf.svg';
+        switchElement.checked = true;
     }
 
     playerEmission = co2;
@@ -221,5 +256,27 @@ var collapse = function(container) {
     for (let i = 0; i < children.length; i++) {        
         const content = children[i].querySelector('.dropdown-content');
         content.style.display = 'none';
+    }
+}
+
+var handleSwitch = function() {
+    let switchElement = document.getElementById('switch');
+
+    if(!switchElement.checked){
+        switchElement.checked = true;
+    }
+    else {
+        dropdownContnetActiveList[2] = 0;
+        dropdownContnetActiveList[3] = 0;
+
+        let ctRaido = document.getElementById('dropdown-content2').querySelector('#dp0');
+        ctRaido.checked = true;
+        radioElementsTrack[2] = ctRaido;
+
+        let vqRadio = document.getElementById('dropdown-content3').querySelector('#dp0');
+        vqRadio.checked = true;
+        radioElementsTrack[3] = vqRadio;
+
+        calculateCurrentAssetEmission(false);
     }
 }

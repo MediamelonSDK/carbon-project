@@ -2,10 +2,14 @@
 <html>
   <head>
     <script src="player/shaka-player.compiled.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.10.0/shaka-player.ui.min.js" integrity="sha512-SaZEjIwnP3kPjpJIMez5fdFV5ysmm9jjp2Py5y/ynpSidTPAueFfeiy//SuAfMmfEGNRi3trF7NY4tAN7XHOgw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.10.0/controls.min.css" integrity="sha512-nAqZrxye1O18iXFtwikO1NfjqYHl9A/mmInP5L3Fw5wbjZlyEjmh5HayNVHjhC+vMlun/shMRGtR/EGtuq+LcA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <!-- Your application source: -->
     <script src="init-player.js"></script>
     <script src="carbon-plugin.js"></script>
     <script src="script.js"></script>
+    <script src="emissionButton.js"></script>
 
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
@@ -17,40 +21,80 @@
     <div class="container">
       <div class="video-box box">
         <div id="video-container">
-          <video id="video" poster="//shaka-player-demo.appspot.com/assets/poster.jpg" src="" 
-                 controls autoplay playsinline
-          ></video>
+          
+          <div data-shaka-player-container>
+            <video autoplay data-shaka-player id="video" ></video>
+          </div>
 
-          <div id="carbon-indicator"></div>
           <div id="overlay-content">
             <div id="overlay-inner-content">
-              <button id="close-overlay">X</button>
-              <p>This video has the following carbon cost breakdown:</p>
-              <ul>
-                <li id="energy-item">Energy:</li>
-                <li id="coo-item">Total CO2:</li>
-              </ul>
-              <p>
-                Learn more at
-                <a href="https://carbon.video">https://carbon.video</a>
-              </p>
+              <div>
+                <p id="overlay-co2-emission">CO2 Emission Playback = </p>
+                <img id="overlay-inner-indicator" style="margin-left: 7px;" src="./leaf.svg" alt="">
+              </div>
+              <div><p id="overlay-avg-co2-emission">Avg. CO2 Em. of the Assets = </p></div>              
+              <div><p id="overlay-total-co2-emission">Total CO2 of Asset = </p></div>              
+              <br>
+              <div>
+                <p> Make streaming greener </p>
+                <label for="switch" class="switch">
+                  <input type="checkbox" id="switch" onclick="handleSwitch()" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              
             </div>
           </div>
         </div>
-      </div>
+      </div>              
       <div class="dropdown-box box">
         <div id="dropdown-container"></div>
       </div>
+    </div>   
+    
+    <div class="emission-container">
+      <div class="emission-info">
+        <div class="emission-card">
+          <h4 style="font-weight: bold; text-align: center">Player</h4>
+          <div class="emission-card">
+            <p id="current-session-co2-emission">CO2 emission playback =</p>
+          </div>
+          <div class="emission-card">
+            <p id="total-co2-emission">Total CO2 emission of asset =</p>
+          </div>
+          <div class="emission-card">
+            <p id="average-co2-emission">
+              Average CO2 emission of the assets =
+            </p>
+          </div>
+        </div>
+        <div class="emission-card">
+          <p id="overall-co2-emission">Total CO2 Emission =</p>
+        </div>
+      </div>
+
+      <div class="emission-info">
+        <div class="emission-card">
+          <h4 style="font-weight: bold; text-align: center">CDN</h4>
+          <div class="emission-card">
+            <p id="avgerage-co2-cdn">Average CO2 emission per asset at CDN =</p>
+          </div>
+          <div class="emission-card">
+            <p id="total-co2-cdn">Total CO2 emission of asset at CDN =</p>
+          </div>
+        </div>
+        <div class="emission-card">
+          <h4 style="font-weight: bold; text-align: center">Encoder</h4>
+          <div class="emission-card">
+            <p id="encode-co2-emission">
+              CO2 emission to encode & package asset =
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
-<!-- 
-    <div class="emission-info">
-      <p id="current-session-co2-emission">CO2 emission playback = </p>
-      <p id="total-co2-emission">Total CO2 emission of asset  = </p>
-      <p id="average-co2-emission">Average CO2 emission of the assets  = </p>
-    </div> -->
-
-    <div class="emission-container">
+    <!-- <div class="emission-container">
       <div class="emission-info">
         <div class="emission-card">
           <p style="font-weight: bold; text-align: center;">Player</p>
@@ -76,8 +120,6 @@
       </div>
     </div>
 
-    <p id="overall-co2-emission"> Total CO2 Emission = </p>
-
-    
+    <p id="overall-co2-emission"> Total CO2 Emission = </p> -->
   </body>
 </html>
