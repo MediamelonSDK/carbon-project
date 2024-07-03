@@ -105,7 +105,7 @@ video {
 }
 
 #overlay-inner-content {
-  width: 40%;
+  width: 20rem;
   height: 85%;
   padding-left: 1rem;
   padding-top: 15px;
@@ -116,7 +116,7 @@ video {
   border-radius: 5px;
   /* box-shadow: 0 15px 15px rgba(255, 255, 255, 0.2); */
   position: relative;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 #overlay-inner-content p,
