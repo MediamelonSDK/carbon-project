@@ -32,7 +32,7 @@ async function initPlayer() {
     const video = document.getElementById('video');
     const ui = video['ui'];
     const config = {
-        'controlPanelElements': ['play_pause', 'spacer' , 'emission', 'fullscreen', 'overflow_menu']
+        'controlPanelElements': ['play_pause', 'spacer' , 'emission', 'overflow_menu'] //fullscreen
        }
        ui.configure(config);
     const controls = ui.getControls();
@@ -51,7 +51,7 @@ async function initPlayer() {
 
     // plugin = new CarbonVideoPlugin({containerId: 'video-container', videoId: 'video', indicatorId: 'carbon-indicator'});
 
-    const videoUrl = 'https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd';
+    const videoUrl = 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd';
     // const accountId = "0aaaa";        
     // const carbonId = getContentId(videoUrl);
     // if(carbonId){

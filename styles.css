@@ -85,14 +85,15 @@ video {
   flex-direction: row;
   justify-content: flex-end;
   /* margin: 1rem; */
-  width: calc(100% - 3rem);
-  /* height: calc(100% - 6.5rem); */
-  max-height: 195px;
+  width: 340px;   /*calc(100% - 3rem);*/
+  height: calc(100% - 100px);
+  /* max-height: 195px; */
   box-sizing: border-box;
   z-index: 100;
   position: absolute;
-  right: 0.5rem;  
-  bottom: 4rem;
+  right: 30px;  
+  bottom: 0px;
+  margin-bottom: 70px;
 }
 
 .fade-out {
@@ -105,24 +106,29 @@ video {
 }
 
 #overlay-inner-content {
-  width: 20rem;
-  height: 85%;
-  padding-left: 1rem;
-  padding-top: 15px;
-  padding-bottom: 5px;  
+  z-index: 1001;
+  width: 300px;
+  /* height: 85%; */
+  padding: 20px;
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.7);
   /* border: 1px solid #000; */
   border-radius: 5px;
   /* box-shadow: 0 15px 15px rgba(255, 255, 255, 0.2); */
   position: relative;
-  /* overflow: scroll; */
+  overflow: scroll;
 }
 
 #overlay-inner-content p,
 #overlay-inner-content li {
-  color: #aaa;
-  font-size: 16px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 36px;
+  /* identical to box height, or 257% */
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
 }
 
 #overlay-inner-content p {
@@ -131,7 +137,6 @@ video {
 }
 
 #overlay-inner-content div {
-  margin-bottom: 12px;  
   display: flex; 
   align-items: center;
 }
@@ -273,4 +278,10 @@ video {
 
 .switch input:checked + .slider::before {
   transform: translateX(21px);
+}
+
+.shaka-bottom-controls {
+  display: flex;
+  flex-direction: column-reverse;
+  padding-bottom: 1.5%;
 }
