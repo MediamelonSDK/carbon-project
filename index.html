@@ -16,7 +16,9 @@
   </head>
   <body>
     <nav class="navbar">
-      <div class="navbar-brand">Carbon Video</div>
+      <div class="navbar-brand">
+        <img style="height: 85px;" src="./logo.png" alt="">
+      </div>
     </nav>
     
     <div class="container">
@@ -36,12 +38,26 @@
               <div><p id="overlay-avg-co2-emission">Avg. CO2 Em. of the Assets = </p></div>              
               <div><p id="overlay-total-co2-emission">Total CO2 of Asset = </p></div>              
               <!-- <br> -->
-              <div style="padding-top: 70px; display: flex; justify-content: space-between; align-items: center;">
-                <p> Make streaming greener </p>
+              <div style="padding-top: 40px; display: flex; justify-content: space-between; align-items: center;">
+                <p> Make your stream green </p>
                 <label for="switch" class="switch">
                   <input type="checkbox" id="switch" onclick="handleSwitch()" />
                   <span class="slider"></span>
                 </label>
+              </div>
+
+              <div style="display: flex; 
+                          flex-direction: column;
+                          justify-content: center;
+                          position: absolute;
+                          bottom: 0; 
+                          padding-bottom: 20px; 
+                          width: 305px;" >
+            <p>Social Media Sharing</p>
+                <div>
+                  <img id="instagram-logo" style="margin-right: 20px;" src="./instagram.svg" onclick="openLink('instagram')" alt="">
+                  <img id="twitter-logo" src="./twitter.svg" onclick="openLink('twitter')" alt="">
+                </div>                
               </div>
               
             </div>

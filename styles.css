@@ -10,13 +10,12 @@ body {
 .navbar {
   width: 100%;
   background-color: white;
-  color: black;
-  padding: 20px 20px;
+  color: black;  
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
-  align-items: center;
-  font-size: 24px;
+  align-items: center;  
+  padding-left: 20px;  
 }
 
 .navbar-brand {
@@ -85,7 +84,7 @@ video {
   flex-direction: row;
   justify-content: flex-end;
   /* margin: 1rem; */
-  width: 340px;   /*calc(100% - 3rem);*/
+  width: 345px;   /*calc(100% - 3rem);*/
   height: calc(100% - 100px);
   /* max-height: 195px; */
   box-sizing: border-box;
@@ -107,7 +106,7 @@ video {
 
 #overlay-inner-content {
   z-index: 1001;
-  width: 300px;
+  width: 305px;
   /* height: 85%; */
   padding: 20px;
   color: #fff;

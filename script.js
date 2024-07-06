@@ -284,3 +284,14 @@ var handleSwitch = function() {
         calculateCurrentAssetEmission(false);
     }
 }
+
+var openLink = function(link) {
+
+    if(link === 'instagram'){
+        window.open('https://www.instagram.com', '_blank');
+    }
+    else if(link === 'twitter'){
+        window.open('https://www.x.com', '_blank');
+    }
+    
+}
