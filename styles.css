@@ -65,7 +65,7 @@ video {
   max-height: 100%; */
   margin: auto;
   width: 55vw;
-  height: 55vh;
+  height: 70vh;
 }
 
 /* #carbon-indicator {
@@ -283,4 +283,13 @@ video {
   display: flex;
   flex-direction: column-reverse;
   padding-bottom: 1.5%;
+}
+
+
+#overlay-item-left {
+  margin-right: auto; /* Pushes this element to the leftmost */
+}
+
+#overlay-info-icon {
+  margin-left: auto; /* Pushes this element to the rightmost */
 }

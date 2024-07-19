@@ -195,7 +195,7 @@ var calculateCurrentAssetEmission = function(updateArray) {
 
     document.getElementById('overlay-co2-emission').textContent = "CO2e for current session = " + co2 + " kg";
     document.getElementById('overlay-avg-co2-emission').textContent = "Avg. CO2e per session = " + avgCo2.toFixed(2) + " kg";
-    document.getElementById('overlay-total-co2-emission').textContent = "Total CO2e of all sessions = " + totalCo2.toFixed(2) + " kg";
+    // document.getElementById('overlay-total-co2-emission').textContent = "Total CO2e of all sessions = " + totalCo2.toFixed(2) + " kg";
     
     let indicator = document.getElementById('emission-indicator'); 
     let innerIndicator = document.getElementById('overlay-inner-indicator');    
@@ -288,10 +288,28 @@ var handleSwitch = function() {
 var openLink = function(link) {
 
     if(link === 'instagram'){
-        window.open('https://www.instagram.com', '_blank');
+        var defaultMessage = "Check out this awesome website!";
+
+        // Construct the Instagram share URL
+        var instagramURL = 'https://www.instagram.com/';
+        var encodedMessage = encodeURIComponent(defaultMessage);
+        var finalURL = instagramURL + 'create/story/?title=' + encodedMessage;
+
+        // Open Instagram in a new tab
+        window.open(finalURL, '_blank');
+        // window.open('https://www.instagram.com', '_blank');
     }
     else if(link === 'twitter'){
         window.open('https://www.x.com', '_blank');
     }
     
+}
+
+var toggleComingSoon = function(index) {
+    var content = document.getElementById('overlay-coming-soon-' + index);
+    if(content.style.display === 'none'){
+        content.style.display = 'block';
+    } else {
+        content.style.display = 'none';
+    }
 }
