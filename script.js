@@ -37,8 +37,8 @@ var dropdownContnetData = {
           {'name':'Azure', 'value': 22.1},
           {'name':'On Prem Private CDN', 'value': 25}],
 
-    '6': [{'name':'Elemental', 'value': 22.5},
-          {'name':'Harmonic', 'value': 23.0}]
+    '6': [{'name':'Elemental', 'value': 22},
+          {'name':'Harmonic', 'value': 23}]
 }
 
 var dropdownContnetActiveList = {
@@ -56,6 +56,9 @@ let radioElementsTrack = new Array(Object.keys(dropDownList).length);
 var emissionValuesArray = [84, 78, 43, 67, 75, 51, 58, 49, 41, 104, 69, 90, 47, 93, 42, 101, 103, 77, 105, 72, 41, 72, 100, 78, 86, 91, 91, 91, 76, 99, 72, 55, 57, 78, 43, 103, 42, 96, 91, 82, 68, 86, 82, 92, 92, 99, 69, 84, 75, 81, 96, 74, 65, 95, 94, 41, 106, 68, 62, 91, 63, 71, 99, 74, 94, 95, 81, 88, 99, 68, 83, 69, 66, 94, 101, 48, 62, 78, 50, 87, 73, 67, 73, 106, 86, 42, 68, 65, 97, 88, 53, 43, 86, 61, 94, 76, 73, 46, 81, 93];
 
 var playerEmission = 0, cdnEmission = 0, encoderEmission = 0;
+
+var cdnEmissionArray = [22, 24, 25, 23, 22, 24, 23, 21, 23, 22,  23, 22, 24, 20, 24, 22, 23, 24, 25, 21,  22, 24, 24, 21, 20, 24, 25, 20, 21, 22,  25, 24, 21, 24, 20, 21, 25, 23, 25, 22,  24, 23, 21, 22, 20, 25, 24, 23, 23, 20,  20, 24, 20, 22, 25, 23, 23, 21, 20, 20,  20, 23, 20, 25, 21, 25, 22, 21, 20, 20,  22, 23, 25, 21, 24, 20, 20, 25, 20, 21,  21, 21, 20, 21, 25, 25, 23, 22, 23, 20,  22, 20, 22, 21, 23, 21, 24, 21, 24, 25];
+var encoderEmissionArray = [ 23, 24, 21, 26, 22, 20, 26, 25, 20, 25, 22, 24, 24, 21, 19, 20, 23, 22, 25, 19, 25, 26, 22, 25, 21, 19, 25, 24, 26, 24, 21, 24, 19, 26, 20, 21, 24, 22, 25, 25, 22, 19, 20, 23, 20, 23, 19, 19, 22, 25, 19, 24, 21, 23, 24, 26, 25, 21, 23, 20, 22, 25, 25, 26, 23, 23, 26, 21, 20, 24, 25, 23, 23, 21, 23, 19, 23, 20, 22, 23, 26, 20, 21, 25, 21, 20, 22, 21, 26, 25, 21, 19, 20, 19, 23, 19, 20, 25, 20, 25];
 
 var updateEmissionValuesArray = function(fetch){
     if(fetch){
@@ -113,7 +116,8 @@ document.addEventListener('shaka-ui-loaded', function () {
 
                 if(i < 5){
                     calculateCurrentAssetEmission(true);
-                    calculateCDNEmission();                    
+                    calculateCDNEmission();
+                    if(i == 3)calculateEncoderEmission();
                 }
                 else if(i == 5){
                     calculateCDNEmission();
@@ -199,18 +203,23 @@ var calculateCurrentAssetEmission = function(updateArray) {
     
     let indicator = document.getElementById('emission-indicator'); 
     let innerIndicator = document.getElementById('overlay-inner-indicator');    
-    let switchElement = document.getElementById('switch');
+    let overlayPlaybackIndicator = document.getElementById('overlay-playback-indicator');
+    let switchElement = document.getElementById('switch');    
+
     if (co2 > avgCo2) {
         indicator.src = 'Carbon-Icon-R.svg';
         innerIndicator.src = 'leaf-R.svg';
+        overlayPlaybackIndicator.src = 'leaf-R.svg';
         switchElement.checked = false;
     } else if (co2 == avgCo2) {
         indicator.src = 'Carbon-Icon_O.svg';
         innerIndicator.src = 'leaf-O.svg';
+        overlayPlaybackIndicator.src = 'leaf-O.svg';
         switchElement.checked = false;
     } else {
         indicator.src = 'Carbon-Icon.svg';
         innerIndicator.src = 'leaf.svg';
+        overlayPlaybackIndicator.src = 'leaf.svg';
         switchElement.checked = true;
     }
 
@@ -218,34 +227,75 @@ var calculateCurrentAssetEmission = function(updateArray) {
 }
 
 var calculateCDNEmission = function() {
-    let avgCo2 = 0;
+    let currentCo2 = 0;
     if(dropdownContnetActiveList[5] >= 0){
-        avgCo2 = dropdownContnetData[5][dropdownContnetActiveList[5]]['value'];
+        currentCo2 = dropdownContnetData[5][dropdownContnetActiveList[5]]['value'];
     }
 
-    let len = emissionValuesArray.length;
-    let totalCo2 = len*avgCo2;
+    var totalCDNEmission = cdnEmissionArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    let length = cdnEmissionArray.length;
+    var avgCo2 = totalCDNEmission/length;
+    cdnEmissionArray.push(currentCo2);
 
-    document.getElementById('avgerage-co2-cdn').textContent = "Avg. CO2e per CDN session = " + avgCo2.toFixed(2) + " kg";    
+    document.getElementById('current-co2-cdn').textContent = "CO2e for current CDN session = " + currentCo2.toFixed(2) + " kg";    
+    document.getElementById('avgerage-co2-cdn').textContent = "Avg. CO2e per CDN session = " + avgCo2.toFixed(2) + " kg";
+    document.getElementById('total-co2-cdn').textContent = "Total CO2e of all the CDN sessions = " + totalCDNEmission.toFixed(2) + " kg";        
 
-    document.getElementById('total-co2-cdn').textContent = "Total CO2e of all the CDN sessions = " + totalCo2.toFixed(2) + " kg";
+    let overlayStreamingIndicator = document.getElementById('overlay-streaming-indicator');
+    if(currentCo2 > avgCo2){
+        overlayStreamingIndicator.src = 'leaf-R.svg';
+    } else if(currentCo2 == avgCo2){
+        overlayStreamingIndicator.src = 'leaf-O.svg';
+    } else {
+        overlayStreamingIndicator.src = 'leaf.svg';
+    }
 
-    cdnEmission = avgCo2;
+    cdnEmission = currentCo2;
 }
 
 var calculateEncoderEmission = function() {
-    let avgEncodeCO2 = 0;
+    let encodeCO2Value = 0;
     if(dropdownContnetActiveList[6] >= 0){
-        avgEncodeCO2 = dropdownContnetData[6][dropdownContnetActiveList[6]]['value'];
+        encodeCO2Value = dropdownContnetData[6][dropdownContnetActiveList[6]]['value'];
     }
 
-    document.getElementById('encode-avg-co2').textContent = "Avg. CO2e per session to encode & package = " + avgEncodeCO2 + " kg";    
+    //Video Quality
+    let currentEncoderEmission = 0;
+    let qualityName = '';
+    if(dropdownContnetActiveList[3] >= 0){        
+        qualityName = dropdownContnetData[3][dropdownContnetActiveList[3]]['name'];
 
-    let len = emissionValuesArray.length;
-    let totalCo2 = len*avgEncodeCO2;
-    document.getElementById('encode-co2-emission').textContent = "Total CO2e to encode & package = " + totalCo2 + " kg";    
+        if(qualityName == 'SD'){
+            currentEncoderEmission = encodeCO2Value - 3;
+        } else if(qualityName == 'HD'){
+            currentEncoderEmission = encodeCO2Value - 1;
+        } else if(qualityName == '4K'){
+            currentEncoderEmission = encodeCO2Value + 3;
+        }
+    }
+    
+    var totalEncoderEmission = encoderEmissionArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    let length = encoderEmissionArray.length;
+    var avgEncodeCo2 = totalEncoderEmission/length;
+    encoderEmissionArray.push(currentEncoderEmission);
 
-    encoderEmission = avgEncodeCO2;
+    if(qualityName != ''){
+        let text = "Avg. CO2e per session to enc. & pac. in " + qualityName + " = ";
+        document.getElementById('encode-avg-co2-quality').textContent = text + currentEncoderEmission.toFixed(2) + " kg";
+    }    
+    document.getElementById('encode-avg-co2').textContent = "Avg. CO2e per session to enc. & pac. = " + avgEncodeCo2.toFixed(2) + " kg";
+    document.getElementById('encode-co2-emission').textContent = "Total CO2e to enc. & pac. = " + totalEncoderEmission.toFixed(2) + " kg";
+
+    let overlayPreperationIndicator = document.getElementById('overlay-preperation-indicator');
+    if(currentEncoderEmission > avgEncodeCo2){
+        overlayPreperationIndicator.src = 'leaf-R.svg';
+    } else if(currentEncoderEmission == avgEncodeCo2){
+        overlayPreperationIndicator.src = 'leaf-O.svg';
+    } else {
+        overlayPreperationIndicator.src = 'leaf.svg';
+    }
+
+    encoderEmission = currentEncoderEmission;
 }
 
 var updateTotalCO2Emission = function() {
@@ -282,6 +332,7 @@ var handleSwitch = function() {
         radioElementsTrack[3] = vqRadio;
 
         calculateCurrentAssetEmission(false);
+        calculateEncoderEmission();
     }
 }
 
@@ -301,6 +352,9 @@ var openLink = function(link) {
     }
     else if(link === 'twitter'){
         window.open('https://www.x.com', '_blank');
+    }
+    else {
+        window.open('https://www.linkedin.com/feed/?shareActive=true', '_blank');
     }
     
 }

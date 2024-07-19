@@ -49,7 +49,7 @@
               <div>
                 <div id="overlay-item-left">
                   <p id="overlay-production">Production</p>
-                  <img id="overlay-inner-indicator1" style="margin-left: 7px;" src="./leaf.svg" alt="">
+                  <img id="overlay-production-indicator" style="margin-left: 7px;" src="./leaf.svg" alt="">
                 </div>
                 <div>               
                   <p id="overlay-coming-soon-1" style="font-size: 10px; display: none;">Coming Soon...</p>                                    
@@ -59,7 +59,7 @@
               <div>
                 <div id="overlay-item-left">
                   <p id="overlay-preperation">Preperation</p>
-                  <img id="overlay-inner-indicator1" style="margin-left: 7px;" src="./leaf.svg" alt="">
+                  <img id="overlay-preperation-indicator" style="margin-left: 7px;" src="./leaf.svg" alt="">
                 </div>
                 <div>
                   <p id="overlay-coming-soon-2" style="font-size: 10px; display: none;">Coming Soon...</p>
@@ -69,7 +69,7 @@
               <div>
                 <div id="overlay-item-left">
                   <p id="overlay-streaming">Streaming</p>
-                  <img id="overlay-inner-indicator1" style="margin-left: 7px;" src="./leaf.svg" alt="">
+                  <img id="overlay-streaming-indicator" style="margin-left: 7px;" src="./leaf.svg" alt="">
                 </div>
                 <div>
                   <p id="overlay-coming-soon-3" style="font-size: 10px; display: none;">Coming Soon...</p>
@@ -79,7 +79,7 @@
               <div>
                 <div id="overlay-item-left">
                   <p id="overlay-playback">Playback</p>
-                  <img id="overlay-inner-indicator1" style="margin-left: 7px;" src="./leaf.svg" alt="">
+                  <img id="overlay-playback-indicator" style="margin-left: 7px;" src="./leaf.svg" alt="">
                 </div>                
                 <div>
                   <p id="overlay-coming-soon-4" style="font-size: 10px; display: none;">Coming Soon...</p>
@@ -122,8 +122,11 @@
     <div class="emission-container">
 
       <div class="emission-info">        
-        <div class="emission-card">
+        <div class="emission-card-container">
           <h4 style="font-weight: bold; text-align: center">Data Center Metrics</h4>
+          <div class="emission-card">
+            <p id="encode-avg-co2-quality">Average CO2 emission per asset at CDN =</p>
+          </div>
           <div class="emission-card">
             <p id="encode-avg-co2">Average CO2 emission per asset at CDN =</p>
           </div>
@@ -136,8 +139,11 @@
       </div>            
 
       <div class="emission-info">
-        <div class="emission-card">
+        <div class="emission-card-container">
           <h4 style="font-weight: bold; text-align: center">CDN Metrics</h4>
+          <div class="emission-card">
+            <p id="current-co2-cdn">CO2e for current CDN session =</p>
+          </div>
           <div class="emission-card">
             <p id="avgerage-co2-cdn">Average CO2 emission per asset at CDN =</p>
           </div>
@@ -148,7 +154,7 @@
       </div>
 
       <div class="emission-info">
-        <div class="emission-card">
+        <div class="emission-card-container">
           <h4 style="font-weight: bold; text-align: center">Player Metrics</h4>
           <div class="emission-card">
             <p id="current-session-co2-emission">CO2 emission playback =</p>

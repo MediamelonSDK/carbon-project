@@ -218,6 +218,18 @@ video {
   font-size: 16px;
 }
 
+.emission-card-container{
+  padding: 0px 10px;
+  padding-bottom: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
 .emission-card {
   padding: 0px 10px;
   background-color: #f9f9f9;
