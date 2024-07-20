@@ -338,25 +338,15 @@ var handleSwitch = function() {
 
 var openLink = function(link) {
 
-    if(link === 'instagram'){
-        var defaultMessage = "Check out this awesome website!";
-
-        // Construct the Instagram share URL
-        var instagramURL = 'https://www.instagram.com/';
-        var encodedMessage = encodeURIComponent(defaultMessage);
-        var finalURL = instagramURL + 'create/story/?title=' + encodedMessage;
-
-        // Open Instagram in a new tab
-        window.open(finalURL, '_blank');
-        // window.open('https://www.instagram.com', '_blank');
+    if(link === 'facebook'){
+        window.open('https://www.facebook.com/sharer.php', '_blank');
     }
     else if(link === 'twitter'){
-        window.open('https://www.x.com', '_blank');
+        window.open('https://x.com/intent/post?text=I+just+made+my+streaming+green+using+carbon+video+indicator.+You+can+also+make+your+stream+green+and+contribute+to+world+green+streaming%21+%23carbonEmission+%23greenStreaming+%23carbonVideo', '_blank');
     }
     else {
         window.open('https://www.linkedin.com/feed/?shareActive=true', '_blank');
     }
-    
 }
 
 var toggleComingSoon = function(index) {
